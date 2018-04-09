@@ -140,11 +140,7 @@ new WorldTime_Timer;
 new Text:GamemodeName;
 
 //UI
-new PlayerText:TourPanelBox[MAX_PLAYERS];
-new PlayerText:TourPlayerName1[MAX_PLAYERS];
-new PlayerText:TourPlayerName2[MAX_PLAYERS];
 new PlayerText:HPBar[MAX_PLAYERS];
-new PlayerText:TourScoreBar[MAX_PLAYERS];
 new PlayerText:InvBox[MAX_PLAYERS];
 new PlayerText:InvSlot[MAX_PLAYERS][MAX_SLOTS];
 new PlayerText:PanelInfo[MAX_PLAYERS];
@@ -159,8 +155,6 @@ new PlayerText:btn_use[MAX_PLAYERS];
 new PlayerText:btn_info[MAX_PLAYERS];
 new PlayerText:btn_del[MAX_PLAYERS];
 new PlayerText:btn_quick[MAX_PLAYERS];
-new PlayerText:blue_flag[MAX_PLAYERS];
-new PlayerText:red_flag[MAX_PLAYERS];
 new PlayerText:inv_ico[MAX_PLAYERS];
 new PlayerText:InvSlotCount[MAX_PLAYERS][MAX_SLOTS];
 new PlayerText:EBox[MAX_PLAYERS][MAX_EFFECTS];
@@ -169,19 +163,25 @@ new PlayerText:SkillIco[MAX_PLAYERS][MAX_SKILLS];
 new PlayerText:SkillButton[MAX_PLAYERS][MAX_SKILLS];
 new PlayerText:SkillTime[MAX_PLAYERS][MAX_SKILLS];
 
-//WatchUI
-new PlayerText:Gong[MAX_PLAYERS];
-new PlayerText:TimeRemaining[MAX_PLAYERS];
-new PlayerText:HP1_bar[MAX_PLAYERS];
-new PlayerText:HP1_box[MAX_PLAYERS];
-new PlayerText:HP2_bar[MAX_PLAYERS];
-new PlayerText:HP2_box[MAX_PLAYERS];
-new PlayerText:HP1_percents[MAX_PLAYERS];
-new PlayerText:HP2_percents[MAX_PLAYERS];
-new PlayerText:Name_blue[MAX_PLAYERS];
-new PlayerText:Name_red[MAX_PLAYERS];
-new PlayerText:RoundValue[MAX_PLAYERS];
-new PlayerText:ScoreBar[MAX_PLAYERS];
+//Combat UI
+new PlayerText:TourScoreBar[MAX_PLAYERS];
+new PlayerText:TourPanelBox[MAX_PLAYERS];
+new PlayerText:TourPlayerName1[MAX_PLAYERS];
+new PlayerText:TourPlayerName2[MAX_PLAYERS];
+new PlayerText:blue_flag[MAX_PLAYERS];
+new PlayerText:red_flag[MAX_PLAYERS];
+new PlayerText:MatchInfoBox[MAX_PLAYERS];
+new PlayerText:MatchRoundInfo[MAX_PLAYERS];
+new PlayerText:MatchRoundTime_Circle[MAX_PLAYERS];
+new PlayerText:MatchRoundTime[MAX_PLAYERS];
+new PlayerText:MatchBlueFlag[MAX_PLAYERS];
+new PlayerText:MatchRedFlag[MAX_PLAYERS];
+new PlayerText:MatchRank1[MAX_PLAYERS];
+new PlayerText:MatchRank2[MAX_PLAYERS];
+new PlayerText:MatchHPBar1[MAX_PLAYERS];
+new PlayerText:MatchHPBar2[MAX_PLAYERS];
+new PlayerText:MatchHPPercents1[MAX_PLAYERS];
+new PlayerText:MatchHPPercents2[MAX_PLAYERS];
 
 //Bases
 new DimakClowns[10][64] = {
@@ -409,6 +409,11 @@ public OnPlayerText(playerid, text[])
 public OnPlayerCommandText(playerid, cmdtext[])
 {
 	new string[255];
+	if (strcmp("/showcombatui", cmdtext, true, 10) == 0)
+	{
+	    ShowMatchInterface(playerid);
+		return 1;
+	}
 	if (strcmp("/creategrid", cmdtext, true, 10) == 0)
 	{
 	    CreateNewTourGrid();
@@ -2906,18 +2911,24 @@ stock ShowInterface(playerid)
 //Показать интерфейс боя
 stock ShowMatchInterface(playerid)
 {
-	PlayerTextDrawShow(playerid, Gong[playerid]);
-    PlayerTextDrawShow(playerid, TimeRemaining[playerid]);
-    PlayerTextDrawShow(playerid, HP1_bar[playerid]);
-	PlayerTextDrawShow(playerid, HP1_box[playerid]);
-	PlayerTextDrawShow(playerid, HP2_bar[playerid]);
-	PlayerTextDrawShow(playerid, HP2_box[playerid]);
-	PlayerTextDrawShow(playerid, HP1_percents[playerid]);
-	PlayerTextDrawShow(playerid, HP2_percents[playerid]);
-	PlayerTextDrawShow(playerid, Name_blue[playerid]);
-	PlayerTextDrawShow(playerid, Name_red[playerid]);
-	PlayerTextDrawShow(playerid, RoundValue[playerid]);
-	PlayerTextDrawShow(playerid, ScoreBar[playerid]);
+	PlayerTextDrawShow(playerid, TourScoreBar[playerid]);
+    PlayerTextDrawShow(playerid, TourPanelBox[playerid]);
+    PlayerTextDrawShow(playerid, TourPlayerName1[playerid]);
+	PlayerTextDrawShow(playerid, TourPlayerName2[playerid]);
+	PlayerTextDrawShow(playerid, blue_flag[playerid]);
+	PlayerTextDrawShow(playerid, red_flag[playerid]);
+	PlayerTextDrawShow(playerid, MatchInfoBox[playerid]);
+	PlayerTextDrawShow(playerid, MatchRoundInfo[playerid]);
+	PlayerTextDrawShow(playerid, MatchRoundTime_Circle[playerid]);
+	PlayerTextDrawShow(playerid, MatchRoundTime[playerid]);
+	PlayerTextDrawShow(playerid, MatchBlueFlag[playerid]);
+	PlayerTextDrawShow(playerid, MatchRedFlag[playerid]);
+	PlayerTextDrawShow(playerid, MatchRank1[playerid]);
+	PlayerTextDrawShow(playerid, MatchRank2[playerid]);
+	PlayerTextDrawShow(playerid, MatchHPBar1[playerid]);
+	PlayerTextDrawShow(playerid, MatchHPBar2[playerid]);
+	PlayerTextDrawShow(playerid, MatchHPPercents1[playerid]);
+	PlayerTextDrawShow(playerid, MatchHPPercents2[playerid]);
 }
 
 //Показать инвентарь
@@ -3453,8 +3464,8 @@ stock InitPlayerTextDraws(playerid)
 	PlayerTextDrawBackgroundColor(playerid, TourPanelBox[playerid], -16776961);
 	PlayerTextDrawFont(playerid, TourPanelBox[playerid], 0);
 
-	TourPlayerName1[playerid] = CreatePlayerTextDraw(playerid, 4.666664, 429.043029, "Dmitriy_Staroverov [GR]");
-	PlayerTextDrawLetterSize(playerid, TourPlayerName1[playerid], 0.370999, 1.707851);
+	TourPlayerName1[playerid] = CreatePlayerTextDraw(playerid, 36.000045, 429.042816, "Dimak [GR]");
+	PlayerTextDrawLetterSize(playerid, TourPlayerName1[playerid], 0.240364, 1.031702);
 	PlayerTextDrawAlignment(playerid, TourPlayerName1[playerid], 1);
 	PlayerTextDrawColor(playerid, TourPlayerName1[playerid], -1061109505);
 	PlayerTextDrawSetShadow(playerid, TourPlayerName1[playerid], 0);
@@ -3462,11 +3473,9 @@ stock InitPlayerTextDraws(playerid)
 	PlayerTextDrawBackgroundColor(playerid, TourPlayerName1[playerid], 51);
 	PlayerTextDrawFont(playerid, TourPlayerName1[playerid], 1);
 	PlayerTextDrawSetProportional(playerid, TourPlayerName1[playerid], 1);
-	PlayerTextDrawSetPreviewModel(playerid, TourPlayerName1[playerid], 0);
-	PlayerTextDrawSetPreviewRot(playerid, TourPlayerName1[playerid], 0.000000, 0.000000, 0.000000, 0.000000);
 
-	TourPlayerName2[playerid] = CreatePlayerTextDraw(playerid, 637.066345, 428.798431, "Alexander_Shaikin [IL]");
-	PlayerTextDrawLetterSize(playerid, TourPlayerName2[playerid], 0.370999, 1.707851);
+	TourPlayerName2[playerid] = CreatePlayerTextDraw(playerid, 604.134399, 429.171447, "ShazokVsemog [IL]");
+	PlayerTextDrawLetterSize(playerid, TourPlayerName2[playerid], 0.239996, 1.000000);
 	PlayerTextDrawAlignment(playerid, TourPlayerName2[playerid], 3);
 	PlayerTextDrawColor(playerid, TourPlayerName2[playerid], -5963521);
 	PlayerTextDrawSetShadow(playerid, TourPlayerName2[playerid], 0);
@@ -3474,8 +3483,6 @@ stock InitPlayerTextDraws(playerid)
 	PlayerTextDrawBackgroundColor(playerid, TourPlayerName2[playerid], 51);
 	PlayerTextDrawFont(playerid, TourPlayerName2[playerid], 1);
 	PlayerTextDrawSetProportional(playerid, TourPlayerName2[playerid], 1);
-	PlayerTextDrawSetPreviewModel(playerid, TourPlayerName2[playerid], 0);
-	PlayerTextDrawSetPreviewRot(playerid, TourPlayerName2[playerid], 0.000000, 0.000000, 0.000000, 0.000000);
 
 	HPBar[playerid] = CreatePlayerTextDraw(playerid, 577.659973, 67.550003, "100% 10000/10000");
 	PlayerTextDrawLetterSize(playerid, HPBar[playerid], 0.134663, 0.666665);
@@ -3489,7 +3496,7 @@ stock InitPlayerTextDraws(playerid)
 	PlayerTextDrawSetPreviewModel(playerid, HPBar[playerid], 0);
 	PlayerTextDrawSetPreviewRot(playerid, HPBar[playerid], 0.000000, 0.000000, 0.000000, 0.000000);
 
-	TourScoreBar[playerid] = CreatePlayerTextDraw(playerid, 294.033538, 428.296325, "1  -  0");
+	TourScoreBar[playerid] = CreatePlayerTextDraw(playerid, 20.833555, 201.226608, "1  -  0");
 	PlayerTextDrawLetterSize(playerid, TourScoreBar[playerid], 0.508665, 2.085334);
 	PlayerTextDrawAlignment(playerid, TourScoreBar[playerid], 1);
 	PlayerTextDrawColor(playerid, TourScoreBar[playerid], -5963521);
@@ -3498,8 +3505,6 @@ stock InitPlayerTextDraws(playerid)
 	PlayerTextDrawBackgroundColor(playerid, TourScoreBar[playerid], 51);
 	PlayerTextDrawFont(playerid, TourScoreBar[playerid], 1);
 	PlayerTextDrawSetProportional(playerid, TourScoreBar[playerid], 1);
-	PlayerTextDrawSetPreviewModel(playerid, TourScoreBar[playerid], 19134);
-	PlayerTextDrawSetPreviewRot(playerid, TourScoreBar[playerid], 0.000000, 0.000000, 90.000000, 1.000000);
 
 	InvBox[playerid] = CreatePlayerTextDraw(playerid, 513.499938, 181.944458, "InvBox");
 	PlayerTextDrawLetterSize(playerid, InvBox[playerid], 0.000000, 14.641860);
@@ -3718,9 +3723,9 @@ stock InitPlayerTextDraws(playerid)
 	PlayerTextDrawSetPreviewModel(playerid, btn_quick[playerid], 1273);
 	PlayerTextDrawSetPreviewRot(playerid, btn_quick[playerid], 0.000000, 0.000000, 180.000000, 1.000000);
 
-	blue_flag[playerid] = CreatePlayerTextDraw(playerid, 271.800048, 428.959960, "blue_flag");
-	PlayerTextDrawLetterSize(playerid, blue_flag[playerid], 0.000000, 0.000000);
-	PlayerTextDrawTextSize(playerid, blue_flag[playerid], 17.000000, 18.000000);
+	blue_flag[playerid] = CreatePlayerTextDraw(playerid, 2.366585, 200.853591, "blue_flag");
+	PlayerTextDrawLetterSize(playerid, blue_flag[playerid], -0.091999, -2.642074);
+	PlayerTextDrawTextSize(playerid, blue_flag[playerid], 17.166725, 21.733358);
 	PlayerTextDrawAlignment(playerid, blue_flag[playerid], 1);
 	PlayerTextDrawColor(playerid, blue_flag[playerid], -1);
 	PlayerTextDrawUseBox(playerid, blue_flag[playerid], true);
@@ -3732,9 +3737,9 @@ stock InitPlayerTextDraws(playerid)
 	PlayerTextDrawSetPreviewModel(playerid, blue_flag[playerid], 19307);
 	PlayerTextDrawSetPreviewRot(playerid, blue_flag[playerid], 0.000000, 0.000000, 0.000000, 1.000000);
 
-	red_flag[playerid] = CreatePlayerTextDraw(playerid, 318.299957, 429.124633, "red_flag");
-	PlayerTextDrawLetterSize(playerid, red_flag[playerid], 0.000000, 0.000000);
-	PlayerTextDrawTextSize(playerid, red_flag[playerid], 35.533332, 18.000000);
+	red_flag[playerid] = CreatePlayerTextDraw(playerid, 26.666576, 199.980773, "red_flag");
+	PlayerTextDrawLetterSize(playerid, red_flag[playerid], 0.028000, 3.901925);
+	PlayerTextDrawTextSize(playerid, red_flag[playerid], 53.866683, 22.148172);
 	PlayerTextDrawAlignment(playerid, red_flag[playerid], 1);
 	PlayerTextDrawColor(playerid, red_flag[playerid], -1);
 	PlayerTextDrawUseBox(playerid, red_flag[playerid], true);
@@ -3866,142 +3871,156 @@ stock InitPlayerTextDraws(playerid)
 	PlayerTextDrawSetString(playerid, SkillButton[playerid][3], "Num6");
 	PlayerTextDrawSetString(playerid, SkillButton[playerid][4], "Num8");
 	
-	Gong[playerid] = CreatePlayerTextDraw(playerid, 272.333404, -33.185173, "Gong");
-	PlayerTextDrawLetterSize(playerid, Gong[playerid], 0.001665, 0.025924);
-	PlayerTextDrawTextSize(playerid, Gong[playerid], 98.333374, 107.851837);
-	PlayerTextDrawAlignment(playerid, Gong[playerid], 1);
-	PlayerTextDrawColor(playerid, Gong[playerid], -1);
-	PlayerTextDrawUseBox(playerid, Gong[playerid], true);
-	PlayerTextDrawBoxColor(playerid, Gong[playerid], 0x00000000);
-	PlayerTextDrawSetShadow(playerid, Gong[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, Gong[playerid], 0);
-	PlayerTextDrawBackgroundColor(playerid, Gong[playerid], 0x00000000);
-	PlayerTextDrawFont(playerid, Gong[playerid], 5);
-	PlayerTextDrawSetPreviewModel(playerid, Gong[playerid], 19154);
-	PlayerTextDrawSetPreviewRot(playerid, Gong[playerid], 0.000000, 0.000000, 0.000000, 1.000000);
 
-	TimeRemaining[playerid] = CreatePlayerTextDraw(playerid, 321.933471, 15.099251, "120");
-	PlayerTextDrawLetterSize(playerid, TimeRemaining[playerid], 0.503332, 2.425482);
-	PlayerTextDrawAlignment(playerid, TimeRemaining[playerid], 2);
-	PlayerTextDrawColor(playerid, TimeRemaining[playerid], -65281);
-	PlayerTextDrawUseBox(playerid, TimeRemaining[playerid], true);
-	PlayerTextDrawBoxColor(playerid, TimeRemaining[playerid], 0);
-	PlayerTextDrawSetShadow(playerid, TimeRemaining[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, TimeRemaining[playerid], -1);
-	PlayerTextDrawBackgroundColor(playerid, TimeRemaining[playerid], 51);
-	PlayerTextDrawFont(playerid, TimeRemaining[playerid], 1);
-	PlayerTextDrawSetProportional(playerid, TimeRemaining[playerid], 1);
+	MatchInfoBox[playerid] = CreatePlayerTextDraw(playerid, 85.566619, 182.732574, "matchinfo_box");
+	PlayerTextDrawLetterSize(playerid, MatchInfoBox[playerid], 0.000000, 4.530230);
+	PlayerTextDrawTextSize(playerid, MatchInfoBox[playerid], 0.599999, 0.000000);
+	PlayerTextDrawAlignment(playerid, MatchInfoBox[playerid], 1);
+	PlayerTextDrawColor(playerid, MatchInfoBox[playerid], 0);
+	PlayerTextDrawUseBox(playerid, MatchInfoBox[playerid], true);
+	PlayerTextDrawBoxColor(playerid, MatchInfoBox[playerid], 51);
+	PlayerTextDrawSetShadow(playerid, MatchInfoBox[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchInfoBox[playerid], 0);
+	PlayerTextDrawBackgroundColor(playerid, MatchInfoBox[playerid], 51);
+	PlayerTextDrawFont(playerid, MatchInfoBox[playerid], 0);
 
-	HP1_bar[playerid] = CreatePlayerTextDraw(playerid, 300.132965, 21.570358, "HP1_bar");
-	PlayerTextDrawLetterSize(playerid, HP1_bar[playerid], 0.020998, 0.925036);
-	PlayerTextDrawTextSize(playerid, HP1_bar[playerid], -300.000195, 13.730388);
-	PlayerTextDrawAlignment(playerid, HP1_bar[playerid], 1);
-	PlayerTextDrawColor(playerid, HP1_bar[playerid], -16776961);
-	PlayerTextDrawUseBox(playerid, HP1_bar[playerid], true);
-	PlayerTextDrawBoxColor(playerid, HP1_bar[playerid], 0);
-	PlayerTextDrawSetShadow(playerid, HP1_bar[playerid], 69);
-	PlayerTextDrawSetOutline(playerid, HP1_bar[playerid], 0);
-	PlayerTextDrawFont(playerid, HP1_bar[playerid], 5);
-	PlayerTextDrawSetPreviewModel(playerid, HP1_bar[playerid], 18657);
-	PlayerTextDrawSetPreviewRot(playerid, HP1_bar[playerid], 0.000000, 0.000000, 0.000000, 1.000000);
+	MatchRoundInfo[playerid] = CreatePlayerTextDraw(playerid, 20.966676, 184.799987, "Round 1");
+	PlayerTextDrawLetterSize(playerid, MatchRoundInfo[playerid], 0.345665, 1.317924);
+	PlayerTextDrawAlignment(playerid, MatchRoundInfo[playerid], 1);
+	PlayerTextDrawColor(playerid, MatchRoundInfo[playerid], -5963521);
+	PlayerTextDrawSetShadow(playerid, MatchRoundInfo[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchRoundInfo[playerid], 1);
+	PlayerTextDrawBackgroundColor(playerid, MatchRoundInfo[playerid], 51);
+	PlayerTextDrawFont(playerid, MatchRoundInfo[playerid], 1);
+	PlayerTextDrawSetProportional(playerid, MatchRoundInfo[playerid], 1);
 
-	HP1_box[playerid] = CreatePlayerTextDraw(playerid, 1.133332, 23.526659, "HPBOX_1");
-	PlayerTextDrawLetterSize(playerid, HP1_box[playerid], 0.000000, 1.094321);
-	PlayerTextDrawTextSize(playerid, HP1_box[playerid], 298.999969, 0.000000);
-	PlayerTextDrawAlignment(playerid, HP1_box[playerid], 1);
-	PlayerTextDrawColor(playerid, HP1_box[playerid], 0);
-	PlayerTextDrawUseBox(playerid, HP1_box[playerid], true);
-	PlayerTextDrawBoxColor(playerid, HP1_box[playerid], -872415164);
-	PlayerTextDrawSetShadow(playerid, HP1_box[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, HP1_box[playerid], 0);
-	PlayerTextDrawBackgroundColor(playerid, HP1_box[playerid], -872415164);
-	PlayerTextDrawFont(playerid, HP1_box[playerid], 0);
+	MatchRoundTime_Circle[playerid] = CreatePlayerTextDraw(playerid, 15.399992, 221.013031, "roundtime_circle");
+	PlayerTextDrawLetterSize(playerid, MatchRoundTime_Circle[playerid], 0.020997, 1.482666);
+	PlayerTextDrawTextSize(playerid, MatchRoundTime_Circle[playerid], 51.333335, 48.118495);
+	PlayerTextDrawAlignment(playerid, MatchRoundTime_Circle[playerid], 1);
+	PlayerTextDrawColor(playerid, MatchRoundTime_Circle[playerid], -1);
+	PlayerTextDrawUseBox(playerid, MatchRoundTime_Circle[playerid], true);
+	PlayerTextDrawBoxColor(playerid, MatchRoundTime_Circle[playerid], 0x00000000);
+	PlayerTextDrawBackgroundColor(playerid, MatchRoundTime_Circle[playerid], 0x00000000);
+	PlayerTextDrawSetShadow(playerid, MatchRoundTime_Circle[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchRoundTime_Circle[playerid], 0);
+	PlayerTextDrawFont(playerid, MatchRoundTime_Circle[playerid], 5);
+	PlayerTextDrawSetPreviewModel(playerid, MatchRoundTime_Circle[playerid], 13594);
+	PlayerTextDrawSetPreviewRot(playerid, MatchRoundTime_Circle[playerid], 0.000000, 180.000000, 0.000000, 1.000000);
 
-	HP2_bar[playerid] = CreatePlayerTextDraw(playerid, 343.266571, 21.570358, "HPBar_2");
-	PlayerTextDrawLetterSize(playerid, HP2_bar[playerid], 0.000000, -0.673332);
-	PlayerTextDrawTextSize(playerid, HP2_bar[playerid], 296.000061, 13.730388);
-	PlayerTextDrawAlignment(playerid, HP2_bar[playerid], 1);
-	PlayerTextDrawColor(playerid, HP2_bar[playerid], -16776961);
-	PlayerTextDrawUseBox(playerid, HP2_bar[playerid], true);
-	PlayerTextDrawBoxColor(playerid, HP2_bar[playerid], 0);
-	PlayerTextDrawSetShadow(playerid, HP2_bar[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, HP2_bar[playerid], 0);
-	PlayerTextDrawFont(playerid, HP2_bar[playerid], 5);
-	PlayerTextDrawSetPreviewModel(playerid, HP2_bar[playerid], 18657);
-	PlayerTextDrawSetPreviewRot(playerid, HP2_bar[playerid], 0.000000, 0.000000, 0.000000, 1.000000);
+	MatchRoundTime[playerid] = CreatePlayerTextDraw(playerid, 41.933540, 241.011962, "180");
+	PlayerTextDrawLetterSize(playerid, MatchRoundTime[playerid], 0.378663, 1.691259);
+	PlayerTextDrawAlignment(playerid, MatchRoundTime[playerid], 2);
+	PlayerTextDrawColor(playerid, MatchRoundTime[playerid], -1);
+	PlayerTextDrawSetShadow(playerid, MatchRoundTime[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchRoundTime[playerid], 1);
+	PlayerTextDrawBackgroundColor(playerid, MatchRoundTime[playerid], 51);
+	PlayerTextDrawFont(playerid, MatchRoundTime[playerid], 1);
+	PlayerTextDrawSetProportional(playerid, MatchRoundTime[playerid], 1);
 
-	HP2_box[playerid] = CreatePlayerTextDraw(playerid, 641.766662, 23.526659, "HPBOX_2");
-	PlayerTextDrawLetterSize(playerid, HP2_box[playerid], 0.000000, 1.104897);
-	PlayerTextDrawTextSize(playerid, HP2_box[playerid], 341.000000, 0.000000);
-	PlayerTextDrawAlignment(playerid, HP2_box[playerid], 1);
-	PlayerTextDrawColor(playerid, HP2_box[playerid], 0);
-	PlayerTextDrawUseBox(playerid, HP2_box[playerid], true);
-	PlayerTextDrawBoxColor(playerid, HP2_box[playerid], -872415164);
-	PlayerTextDrawSetShadow(playerid, HP2_box[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, HP2_box[playerid], 0);
-	PlayerTextDrawFont(playerid, HP2_box[playerid], 0);
+	MatchBlueFlag[playerid] = CreatePlayerTextDraw(playerid, -5.099925, 424.194610, "blue_flag");
+	PlayerTextDrawLetterSize(playerid, MatchBlueFlag[playerid], -0.091999, -2.642074);
+	PlayerTextDrawTextSize(playerid, MatchBlueFlag[playerid], 28.600114, 27.374824);
+	PlayerTextDrawAlignment(playerid, MatchBlueFlag[playerid], 1);
+	PlayerTextDrawColor(playerid, MatchBlueFlag[playerid], -1);
+	PlayerTextDrawUseBox(playerid, MatchBlueFlag[playerid], true);
+	PlayerTextDrawBoxColor(playerid, MatchBlueFlag[playerid], 0x00000000);
+	PlayerTextDrawBackgroundColor(playerid, MatchBlueFlag[playerid], 0x00000000);
+	PlayerTextDrawSetShadow(playerid, MatchBlueFlag[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchBlueFlag[playerid], 0);
+	PlayerTextDrawFont(playerid, MatchBlueFlag[playerid], 5);
+	PlayerTextDrawSetPreviewModel(playerid, MatchBlueFlag[playerid], 19307);
+	PlayerTextDrawSetPreviewRot(playerid, MatchBlueFlag[playerid], 0.000000, 0.000000, 0.000000, 1.000000);
 
-	HP1_percents[playerid] = CreatePlayerTextDraw(playerid, 147.200012, 21.777778, "100%");
-	PlayerTextDrawLetterSize(playerid, HP1_percents[playerid], 0.256998, 1.384295);
-	PlayerTextDrawAlignment(playerid, HP1_percents[playerid], 2);
-	PlayerTextDrawColor(playerid, HP1_percents[playerid], 255);
-	PlayerTextDrawSetShadow(playerid, HP1_percents[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, HP1_percents[playerid], 0);
-	PlayerTextDrawBackgroundColor(playerid, HP1_percents[playerid], 51);
-	PlayerTextDrawFont(playerid, HP1_percents[playerid], 1);
-	PlayerTextDrawSetProportional(playerid, HP1_percents[playerid], 1);
+	MatchRedFlag[playerid] = CreatePlayerTextDraw(playerid, 614.299255, 425.395629, "red_flag");
+	PlayerTextDrawLetterSize(playerid, MatchRedFlag[playerid], 0.028000, 3.901925);
+	PlayerTextDrawTextSize(playerid, MatchRedFlag[playerid], 30.266883, 25.964469);
+	PlayerTextDrawAlignment(playerid, MatchRedFlag[playerid], 1);
+	PlayerTextDrawColor(playerid, MatchRedFlag[playerid], -1);
+	PlayerTextDrawUseBox(playerid, MatchRedFlag[playerid], true);
+	PlayerTextDrawBoxColor(playerid, MatchRedFlag[playerid], 0x00000000);
+	PlayerTextDrawBackgroundColor(playerid, MatchRedFlag[playerid], 0x00000000);
+	PlayerTextDrawSetShadow(playerid, MatchRedFlag[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchRedFlag[playerid], 0);
+	PlayerTextDrawFont(playerid, MatchRedFlag[playerid], 5);
+	PlayerTextDrawSetPreviewModel(playerid, MatchRedFlag[playerid], 19306);
+	PlayerTextDrawSetPreviewRot(playerid, MatchRedFlag[playerid], 0.000000, 0.000000, 0.000000, 1.000000);
 
-	HP2_percents[playerid] = CreatePlayerTextDraw(playerid, 491.166595, 22.192611, "100%");
-	PlayerTextDrawLetterSize(playerid, HP2_percents[playerid], 0.246665, 1.322072);
-	PlayerTextDrawAlignment(playerid, HP2_percents[playerid], 2);
-	PlayerTextDrawColor(playerid, HP2_percents[playerid], 255);
-	PlayerTextDrawSetShadow(playerid, HP2_percents[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, HP2_percents[playerid], 0);
-	PlayerTextDrawBackgroundColor(playerid, HP2_percents[playerid], 51);
-	PlayerTextDrawFont(playerid, HP2_percents[playerid], 1);
-	PlayerTextDrawSetProportional(playerid, HP2_percents[playerid], 1);
+	MatchRank1[playerid] = CreatePlayerTextDraw(playerid, 13.799933, 418.963134, "rank_1");
+	PlayerTextDrawLetterSize(playerid, MatchRank1[playerid], -0.006666, 4.157330);
+	PlayerTextDrawTextSize(playerid, MatchRank1[playerid], 25.666671, 38.577754);
+	PlayerTextDrawAlignment(playerid, MatchRank1[playerid], 2);
+	PlayerTextDrawColor(playerid, MatchRank1[playerid], -1);
+	PlayerTextDrawUseBox(playerid, MatchRank1[playerid], true);
+	PlayerTextDrawBoxColor(playerid, MatchRank1[playerid], 0x00000000);
+	PlayerTextDrawBackgroundColor(playerid, MatchRank1[playerid], 0x00000000);
+	PlayerTextDrawSetShadow(playerid, MatchRank1[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchRank1[playerid], 0);
+	PlayerTextDrawFont(playerid, MatchRank1[playerid], 5);
+	PlayerTextDrawSetPreviewModel(playerid, MatchRank1[playerid], 19785);
+	PlayerTextDrawSetPreviewRot(playerid, MatchRank1[playerid], 90.000000, 0.000000, 180.000000, 1.000000);
 
-	Name_blue[playerid] = CreatePlayerTextDraw(playerid, 10.400010, 2.862216, "Alexander_Shaikin");
-	PlayerTextDrawLetterSize(playerid, Name_blue[playerid], 0.373665, 1.720296);
-	PlayerTextDrawAlignment(playerid, Name_blue[playerid], 1);
-	PlayerTextDrawColor(playerid, Name_blue[playerid], 865730508);
-	PlayerTextDrawSetShadow(playerid, Name_blue[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, Name_blue[playerid], 1);
-	PlayerTextDrawBackgroundColor(playerid, Name_blue[playerid], 51);
-	PlayerTextDrawFont(playerid, Name_blue[playerid], 1);
-	PlayerTextDrawSetProportional(playerid, Name_blue[playerid], 1);
+	MatchRank2[playerid] = CreatePlayerTextDraw(playerid, 600.066467, 418.884704, "rank_2");
+	PlayerTextDrawLetterSize(playerid, MatchRank2[playerid], -0.006666, 4.157330);
+	PlayerTextDrawTextSize(playerid, MatchRank2[playerid], 25.666671, 38.577754);
+	PlayerTextDrawAlignment(playerid, MatchRank2[playerid], 2);
+	PlayerTextDrawColor(playerid, MatchRank2[playerid], -1);
+	PlayerTextDrawUseBox(playerid, MatchRank2[playerid], true);
+	PlayerTextDrawBoxColor(playerid, MatchRank2[playerid], 0x00000000);
+	PlayerTextDrawBackgroundColor(playerid, MatchRank2[playerid], 0x00000000);
+	PlayerTextDrawSetShadow(playerid, MatchRank2[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchRank2[playerid], 0);
+	PlayerTextDrawFont(playerid, MatchRank2[playerid], 5);
+	PlayerTextDrawSetPreviewModel(playerid, MatchRank2[playerid], 19785);
+	PlayerTextDrawSetPreviewRot(playerid, MatchRank2[playerid], 90.000000, 0.000000, 180.000000, 1.000000);
 
-	Name_red[playerid] = CreatePlayerTextDraw(playerid, 631.466369, 2.945207, "Dmitriy_Staroverov");
-	PlayerTextDrawLetterSize(playerid, Name_red[playerid], 0.378666, 1.728590);
-	PlayerTextDrawAlignment(playerid, Name_red[playerid], 3);
-	PlayerTextDrawColor(playerid, Name_red[playerid], -16777046);
-	PlayerTextDrawSetShadow(playerid, Name_red[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, Name_red[playerid], 1);
-	PlayerTextDrawBackgroundColor(playerid, Name_red[playerid], 51);
-	PlayerTextDrawFont(playerid, Name_red[playerid], 1);
-	PlayerTextDrawSetProportional(playerid, Name_red[playerid], 1);
+	MatchHPBar2[playerid] = CreatePlayerTextDraw(playerid, 603.565917, 440.579559, "match_hp_bar_2");
+	PlayerTextDrawLetterSize(playerid, MatchHPBar2[playerid], 0.000000, 0.000000);
+	PlayerTextDrawTextSize(playerid, MatchHPBar2[playerid], -283.999908, 8.379254);
+	PlayerTextDrawAlignment(playerid, MatchHPBar2[playerid], 1);
+	PlayerTextDrawColor(playerid, MatchHPBar2[playerid], -16776961);
+	PlayerTextDrawUseBox(playerid, MatchHPBar2[playerid], true);
+	PlayerTextDrawBoxColor(playerid, MatchHPBar2[playerid], 0);
+	PlayerTextDrawSetShadow(playerid, MatchHPBar2[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchHPBar2[playerid], 0);
+	PlayerTextDrawBackgroundColor(playerid, MatchHPBar2[playerid], -16777046);
+	PlayerTextDrawFont(playerid, MatchHPBar2[playerid], 5);
+	PlayerTextDrawSetPreviewModel(playerid, MatchHPBar2[playerid], 18657);
+	PlayerTextDrawSetPreviewRot(playerid, MatchHPBar2[playerid], 0.000000, 0.000000, 0.000000, 0.000000);
 
-	RoundValue[playerid] = CreatePlayerTextDraw(playerid, 322.066711, 50.109645, "Round 1");
-	PlayerTextDrawLetterSize(playerid, RoundValue[playerid], 0.319665, 1.346961);
-	PlayerTextDrawAlignment(playerid, RoundValue[playerid], 2);
-	PlayerTextDrawColor(playerid, RoundValue[playerid], -5963521);
-	PlayerTextDrawSetShadow(playerid, RoundValue[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, RoundValue[playerid], -1);
-	PlayerTextDrawBackgroundColor(playerid, RoundValue[playerid], 51);
-	PlayerTextDrawFont(playerid, RoundValue[playerid], 1);
-	PlayerTextDrawSetProportional(playerid, RoundValue[playerid], 1);
+	MatchHPPercents1[playerid] = CreatePlayerTextDraw(playerid, 175.066619, 440.459564, "100%");
+	PlayerTextDrawLetterSize(playerid, MatchHPPercents1[playerid], 0.151030, 0.667495);
+	PlayerTextDrawAlignment(playerid, MatchHPPercents1[playerid], 2);
+	PlayerTextDrawColor(playerid, MatchHPPercents1[playerid], 255);
+	PlayerTextDrawSetShadow(playerid, MatchHPPercents1[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchHPPercents1[playerid], 0);
+	PlayerTextDrawBackgroundColor(playerid, MatchHPPercents1[playerid], 51);
+	PlayerTextDrawFont(playerid, MatchHPPercents1[playerid], 1);
+	PlayerTextDrawSetProportional(playerid, MatchHPPercents1[playerid], 1);
 
-	ScoreBar[playerid] = CreatePlayerTextDraw(playerid, 322.233337, 60.106670, "0 : 0");
-	PlayerTextDrawLetterSize(playerid, ScoreBar[playerid], 0.498333, 2.728296);
-	PlayerTextDrawAlignment(playerid, ScoreBar[playerid], 2);
-	PlayerTextDrawColor(playerid, ScoreBar[playerid], -3394561);
-	PlayerTextDrawSetShadow(playerid, ScoreBar[playerid], 0);
-	PlayerTextDrawSetOutline(playerid, ScoreBar[playerid], 1);
-	PlayerTextDrawBackgroundColor(playerid, ScoreBar[playerid], 51);
-	PlayerTextDrawFont(playerid, ScoreBar[playerid], 1);
-	PlayerTextDrawSetProportional(playerid, ScoreBar[playerid], 1);
-	PlayerTextDrawSetPreviewModel(playerid, ScoreBar[playerid], 18656);
-	PlayerTextDrawSetPreviewRot(playerid, ScoreBar[playerid], 10.000000, 0.000000, 0.000000, 1.000000);
+	MatchHPBar1[playerid] = CreatePlayerTextDraw(playerid, 35.999008, 440.376739, "match_hp_bar_1");
+	PlayerTextDrawLetterSize(playerid, MatchHPBar1[playerid], -0.026333, -8.227705);
+	PlayerTextDrawTextSize(playerid, MatchHPBar1[playerid], 284.000274, 22.939250);
+	PlayerTextDrawAlignment(playerid, MatchHPBar1[playerid], 1);
+	PlayerTextDrawColor(playerid, MatchHPBar1[playerid], -16776961);
+	PlayerTextDrawUseBox(playerid, MatchHPBar1[playerid], true);
+	PlayerTextDrawBoxColor(playerid, MatchHPBar1[playerid], 0);
+	PlayerTextDrawSetShadow(playerid, MatchHPBar1[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchHPBar1[playerid], 0);
+	PlayerTextDrawBackgroundColor(playerid, MatchHPBar1[playerid], -16777046);
+	PlayerTextDrawFont(playerid, MatchHPBar1[playerid], 5);
+	PlayerTextDrawSetPreviewModel(playerid, MatchHPBar1[playerid], 18657);
+	PlayerTextDrawSetPreviewRot(playerid, MatchHPBar1[playerid], 0.000000, 0.000000, 0.000000, 0.000000);
+
+	MatchHPPercents2[playerid] = CreatePlayerTextDraw(playerid, 461.066650, 440.795989, "100%");
+	PlayerTextDrawLetterSize(playerid, MatchHPPercents2[playerid], 0.151030, 0.667495);
+	PlayerTextDrawAlignment(playerid, MatchHPPercents2[playerid], 2);
+	PlayerTextDrawColor(playerid, MatchHPPercents2[playerid], 255);
+	PlayerTextDrawSetShadow(playerid, MatchHPPercents2[playerid], 0);
+	PlayerTextDrawSetOutline(playerid, MatchHPPercents2[playerid], 0);
+	PlayerTextDrawBackgroundColor(playerid, MatchHPPercents2[playerid], 51);
+	PlayerTextDrawFont(playerid, MatchHPPercents2[playerid], 1);
+	PlayerTextDrawSetProportional(playerid, MatchHPPercents2[playerid], 1);
 }
 
 //Загрузка объектов
